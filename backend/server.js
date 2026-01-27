@@ -1,0 +1,55 @@
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import { generateDemoData } from "./demoData.mjs";
+
+// Import routes
+import authRoutes from "./routes/admin/auth.routes.js";
+import enrollmentRoutes from "./routes/admin/enrollment.routes.js";
+import waterroutes from "./routes/admin/water.routes.js";
+import hotspotroutes from "./routes/admin/hotspot.routes.js";
+import healthroutes from "./routes/admin/health.routes.js";
+import locationroutes from "./routes/admin/managelocation.routes.js";
+import alertRoutes from "./routes/admin/alert.routes.js";
+import { translateText } from './controllers/translation.controller.js';
+import therapistRoutes from "./routes/healthofficial/therapist.routes.js"
+// Load environment variables
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 5001;
+
+// Middleware
+app.use(
+  cors({
+    origin: "http://localhost:5173", // your frontend Vite dev URL
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
+// Enable Cross-Origin Resource Sharing
+app.use(express.json()); // Body parser for JSON
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// Admin Routes
+app.use("/api/enroll", enrollmentRoutes);
+app.use("/api/auth", authRoutes);
+app.use('/api', waterroutes);
+app.use("/api/hotspot", hotspotroutes);
+app.use("/api/health", healthroutes);
+app.use("/api/location", locationroutes);
+app.use('/api/alerts', alertRoutes);
+app.post('/api/translate', translateText);
+// health routes 
+app.use('/api/ai', therapistRoutes);
+
+// Simple health check route
+app.get("/", (req, res) => {
+  res.send("Aquasentials API is running...");
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});

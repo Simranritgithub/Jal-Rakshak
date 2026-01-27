@@ -1,0 +1,14 @@
+{
+  "dashboardTitle": "Enrollment Dashboard",
+  "addOfficialBtn": "Add New Official",
+  "healthOfficialsTitle": "Health Officials",
+  "approvalRequestsTitle": "Approval Requests",
+  "ashaWorkers": "ASHA Workers",
+  "registeredVillagers": "Registered Villagers",
+  "volunteersAvailable": "Volunteers Available",
+  "totalRegisteredUsers": "Total Registered Users",
+  "state": "State",
+  "region": "Region",
+  "role": "Role",
+  "village": "Village"
+}
