@@ -2,22 +2,16 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 // Page and Route component imports
-import AdminLogin from "./components/admin/pages/login";
+import Register from "./Auth/Register";
 import SetPassword from "./components/admin/pages/setPassword"
 import AdminRoutes from "./components/admin/routes/appRoutes";
 import Healthroutes from "./components/health/routes/appRoutes1"
+
 const AppRoutes = () => {
   return (
     <Routes>
       {/* Public Pages */}
-      <Route
-        path="/"
-        element={
-         
-            <AdminLogin />
-          
-        }
-      />
+      <Route path="/" element={<Register/>} />
       <Route
         path="/set-password/:resetToken"
         element={
