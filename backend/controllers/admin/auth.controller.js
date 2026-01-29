@@ -1,4 +1,6 @@
 import user from '../../Models/User.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 export const register =async(req,res)=>{
   try {
     const {name,email,role,password}=req.body;
@@ -37,3 +39,55 @@ export const register =async(req,res)=>{
     })
   }
 }
+
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // 🔹 Check email exists
+    const existingUser = await user.findOne({ email });
+
+    if (!existingUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    // 🔹 Compare password
+    const isMatch = await bcrypt.compare(password, existingUser.password);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials"
+      });
+    }
+
+    // 🔹 Generate token
+    const token = jwt.sign(
+      { id: existingUser._id, role: existingUser.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+      user: {
+        id: existingUser._id,
+        name: existingUser.name,
+        email: existingUser.email,
+        role: existingUser.role
+      }
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};

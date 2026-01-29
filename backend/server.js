@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 
 // Import routes
 import authRoutes from "./routes/admin/auth.routes.js";
-// import enrollmentRoutes from "./routes/admin/enrollment.routes.js";
+ import enrollmentRoutes from "./routes/admin/enrollment.routes.js";
 // import waterroutes from "./routes/admin/water.routes.js";
 // import hotspotroutes from "./routes/admin/hotspot.routes.js";
 // import healthroutes from "./routes/admin/health.routes.js";
@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Admin Routes
-// app.use("/api/enroll", enrollmentRoutes);
+ app.use("/api/enroll", enrollmentRoutes);
 app.use("/api/auth", authRoutes);
 // app.use('/api', waterroutes);
 // app.use("/api/hotspot", hotspotroutes);

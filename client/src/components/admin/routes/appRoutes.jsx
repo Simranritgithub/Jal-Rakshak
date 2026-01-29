@@ -3,7 +3,7 @@ import EnrollDashboard from "../pages/enrollmentDashboard";
 import CreateHealthOfficial from "../pages/createHealthOfficial";
 import Awareness from "../pages/awareness";
 import Hotspots from "../pages/hotspots";
-import Healthdashboard from "../pages/healthDashboard";
+import Admindashboard from "../pages/Admin.jsx";
 import Waterdashboard from "../pages/waterDashboard";
 import Alerts from "../pages/alerts";
 import Alert from "../pages/alert.jsx";
@@ -16,7 +16,7 @@ const AdminRoutes = () => {
       <Routes>
         <Route path="enroll" element={<EnrollDashboard />} />
         <Route path="awareness" element={<Awareness />} />
-        <Route path="health-reports" element={<Healthdashboard />} />
+        <Route path="dashboard" element={<Admindashboard />} />
         <Route path="water-reports" element={<Waterdashboard />} />
         <Route path="Alerts" element={<Alerts />} />
 

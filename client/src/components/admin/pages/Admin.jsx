@@ -23,7 +23,7 @@ import {
   UserPlus,
   Send,
 } from "lucide-react";
-import Sidebar from "../../sidebar"; // Importing your separate Sidebar component
+import Navbar from "../components/Navbar";
 
 // --- Mock Data for Charts ---
 const weeklyCases = [
@@ -353,13 +353,13 @@ const HealthContent = () => {
 };
 
 // --- Main Page Component ---
-const HealthDashboard = () => {
+const Admindashboard = () => {
   return (
     <div className="flex h-screen bg-slate-50 font-sans">
-      <Sidebar activePage="Health Reports" />
+      <Navbar activePage="Health Reports" />
       <HealthContent />
     </div>
   );
 };
 
-export default HealthDashboard;
+export default Admindashboard;

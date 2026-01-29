@@ -3,69 +3,55 @@ const prisma = new PrismaClient();
 import sendEmail from "../../utils/sendEmail.js";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
+import user from "../../Models/User.js";
+import watersample from "../../Models/WaterSample.js";
+
 export const getAdminDashboardData = async (req, res) => {
   try {
-    // 🛠️ UPDATE: Get filter criteria from query parameters
-    const { stateId, villageId } = req.query;
 
-    // 🛠️ UPDATE: Build a dynamic filter object based on query params
-    const userFilter = { status: "ACTIVE" };
-    if (villageId) {
-      userFilter.villageId = villageId;
-    } else if (stateId) {
-      userFilter.region = { stateId: stateId };
-    }
+    // Count users
+    const totalUsers = await user.countDocuments();
 
-    const healthOfficialFilter = { status: "ACTIVE" };
-    if (stateId) {
-        healthOfficialFilter.region = { stateId: stateId };
-    }
+    const ashaWorkers = await user.countDocuments({ role: "Asha worker" });
 
-    // Run all queries concurrently with the new filters
-    const [
-      ashaWorkers,
-      registeredVillagers,
-      volunteersAvailable,
-      activeHealthOfficialsCount,
-      totalRegisteredUsers,
-      activeHealthOfficialsList,
-    ] = await Promise.all([
-      prisma.user.count({ where: { role: "ASHA_WORKER", ...userFilter } }),
-      prisma.user.count({ where: { role: "VILLAGER", ...userFilter } }),
-      prisma.user.count({ where: { role: "VOLUNTEER", ...userFilter } }),
-      prisma.user.count({ where: { role: "HEALTH_OFFICIAL", ...healthOfficialFilter } }),
-      prisma.user.count({ where: userFilter }),
-      prisma.user.findMany({
-        where: { role: "HEALTH_OFFICIAL", ...healthOfficialFilter },
-        select: {
-          id: true,
-          name: true,
-          status: true,
-          region: {
-            select: { id: true, name: true, state: { select: { name: true } } },
-          },
+    const admins = await user.countDocuments({ role: "Admin" });
+
+    // Water sample stats
+    const totalSamples = await watersample.countDocuments();
+
+    const unsafeSamples = await watersample.countDocuments({
+      status: "Unsafe"
+    });
+
+    // Latest samples
+    const latestSamples = await watersample
+      .find()
+      .populate("collectedBy", "name email")
+      .sort({ createdAt: -1 })
+      .limit(5);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        stats: {
+          totalUsers,
+          ashaWorkers,
+          admins,
+          totalSamples,
+          unsafeSamples
         },
-        orderBy: { createdAt: "desc" },
-      }),
-    ]);
+        latestSamples
+      }
+    });
 
-    const dashboardData = {
-      stats: {
-        ashaWorkers,
-        registeredVillagers,
-        volunteersAvailable,
-        healthOfficials: activeHealthOfficialsCount,
-        totalRegisteredUsers,
-      },
-      healthOfficials: activeHealthOfficialsList,
-    };
-
-    res.status(200).json({ success: true, data: dashboardData });
   } catch (error) {
-    console.error("Error in getAdminDashboardData:", error);
-    res.status(500).json({ success: false, message: "Server Error" });
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    });
   }
 };
+
 
 export const getPendingAshaWorkers = async (req, res) => {
     try {

@@ -17,7 +17,9 @@ const Register = () => {
   }
   
 
-  const HandleonRegister=async()=>{
+  const HandleonRegister=async(e)=>{
+    e.preventDefault();
+    console.log("clicked");
     try {
       const res = await instance.post("/auth/register",form)
       if(res.data.success){
@@ -51,11 +53,10 @@ flex flex-col items-center
 p-8 
 ">
 
-          <div className='flex flex-col gap-2  justify-center items-center'>
+  <div className='flex flex-col gap-2  justify-center items-center'>
            <h1 className="
-text-3xl font-bold
-bg-gradient-to-r from-[#26CCC2] to-[#6AECE1]
-bg-clip-text text-transparent
+text-3xl font-extrabold
+text-[#010c0c]
 ">
 JalRakshak
 </h1>
