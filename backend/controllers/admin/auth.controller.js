@@ -1,6 +1,7 @@
 import user from '../../Models/User.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import Ashaworker from '../../Models/Ashaworker.js';
 export const register =async(req,res)=>{
   try {
     const {name,email,role,password}=req.body;
@@ -64,6 +65,21 @@ export const login = async (req, res) => {
         message: "Invalid credentials"
       });
     }
+    let hasprofile=false;
+    if( existingUser.role==="Admin"){
+      const Profile=await Ashaworker.findOne({AshaworkerId:existingUser._id});
+      if(Profile){
+      hasprofile=true;}
+    
+    }
+     if( existingUser.role==="Asha worker"){
+      const Profile=await Ashaworker.findOne({AshaworkerId:existingUser._id});
+      if(Profile){
+      hasprofile=true;
+    }
+    
+    }
+    console.log("hasprofile",hasprofile);
 
     // 🔹 Generate token
     const token = jwt.sign(
@@ -80,8 +96,10 @@ export const login = async (req, res) => {
         id: existingUser._id,
         name: existingUser.name,
         email: existingUser.email,
-        role: existingUser.role
+        role: existingUser.role,
+        hasprofile
       }
+      
     });
 
   } catch (error) {

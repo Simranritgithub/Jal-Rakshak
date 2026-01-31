@@ -18,13 +18,14 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="
-      fixed top-0 left-0 right-0 z-50
-      bg-white/40 backdrop-blur-xl
-      border-b border-white/30
-      shadow-lg
-    ">
-
+    <nav
+      className="
+        fixed top-0 left-0 right-0 z-50
+        bg-white/60 backdrop-blur-xl
+        border-b border-[#6AECE1]/40
+        shadow-sm
+      "
+    >
       <div className="h-16 flex items-center justify-between px-6 w-full max-w-7xl mx-auto">
 
         {/* BRAND */}
@@ -32,20 +33,18 @@ const Navbar = () => {
           onClick={() => navigate("/")}
           className="flex items-center gap-3 cursor-pointer"
         >
-          <div className="
-            w-9 h-9 rounded-xl
-            bg-gradient-to-br from-[#26CCC2] to-[#6AECE1]
-            flex items-center justify-center
-            shadow-md
-          ">
+          <div
+            className="
+              w-9 h-9 rounded-xl
+              bg-[#26CCC2]
+              flex items-center justify-center
+              shadow-sm
+            "
+          >
             <Droplets className="text-white" size={18} />
           </div>
 
-          <h1 className="
-            text-lg font-bold
-            bg-gradient-to-r from-[#26CCC2] to-[#6AECE1]
-            bg-clip-text text-transparent
-          ">
+          <h1 className="text-lg font-bold text-[#26CCC2]">
             JalRakshak
           </h1>
         </div>
@@ -58,7 +57,7 @@ const Navbar = () => {
             className={({ isActive }) =>
               isActive
                 ? "text-[#26CCC2] font-semibold"
-                : "text-slate-700 hover:text-[#26CCC2]"
+                : "text-[#2D3436] hover:text-[#26CCC2]"
             }
           >
             Dashboard
@@ -69,10 +68,20 @@ const Navbar = () => {
             className={({ isActive }) =>
               isActive
                 ? "text-[#26CCC2] font-semibold"
-                : "text-slate-700 hover:text-[#26CCC2]"
+                : "text-[#2D3436] hover:text-[#26CCC2]"
             }
           >
             Water Reports
+          </NavLink>
+           <NavLink
+            to="/admin/asharequests"
+            className={({ isActive }) =>
+              isActive
+                ? "text-[#26CCC2] font-semibold"
+                : "text-[#2D3436] hover:text-[#26CCC2]"
+            }
+          >
+            AshaWorkers
           </NavLink>
 
           <NavLink
@@ -80,7 +89,7 @@ const Navbar = () => {
             className={({ isActive }) =>
               isActive
                 ? "text-[#26CCC2] font-semibold"
-                : "text-slate-700 hover:text-[#26CCC2]"
+                : "text-[#2D3436] hover:text-[#26CCC2]"
             }
           >
             Alerts
@@ -92,19 +101,21 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
 
           {/* Notification */}
-          <button className="
-            relative p-2 rounded-full
-            hover:bg-white/40
-            transition
-          ">
-            <Bell size={18} className="text-slate-700" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          <button
+            className="
+              relative p-2 rounded-full
+              hover:bg-[#6AECE1]/20
+              transition
+            "
+          >
+            <Bell size={18} className="text-[#2D3436]" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-[#FFB76C] rounded-full"></span>
           </button>
 
           {/* User */}
           <div className="flex items-center gap-2">
-            <UserCircle size={22} className="text-slate-700" />
-            <span className="text-sm font-medium text-slate-700">
+            <UserCircle size={22} className="text-[#26CCC2]" />
+            <span className="text-sm font-medium text-[#2D3436]">
               {user?.name || "User"}
             </span>
           </div>
@@ -114,8 +125,8 @@ const Navbar = () => {
             onClick={handleLogout}
             className="
               text-sm font-medium
-              text-red-500
-              hover:text-red-600
+              text-[#FFB76C]
+              hover:opacity-80
               transition
             "
           >

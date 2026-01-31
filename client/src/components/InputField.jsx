@@ -12,7 +12,7 @@ const InputField = ({
       {label}
     </label>
 
-    <div className="mt-1 flex items-center gap-3 px-4 py-3 rounded-2xl border border-slate-200 bg-white focus-within:ring-2 focus-within:ring-[#0ABAB5]/40">
+    <div className="mt-1 flex items-center gap-3 px-4 py-3 rounded-2xl border-2 border-slate-400 bg-white focus-within:ring-2 focus-within:ring-[#0ABAB5]/40">
       <span className="text-slate-400">{icon}</span>
       <input
         type={type}
@@ -20,7 +20,7 @@ const InputField = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full bg-transparent text-sm text-slate-800 focus:outline-none"
+        className="w-full bg-transparent text-sm text-slate-800 focus:outline-none "
       />
     </div>
   </div>

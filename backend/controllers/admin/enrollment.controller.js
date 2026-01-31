@@ -5,6 +5,7 @@ import crypto from "crypto";
 import bcrypt from "bcrypt";
 import user from "../../Models/User.js";
 import watersample from "../../Models/WaterSample.js";
+import Ashaworker from "../../Models/Ashaworker.js";
 
 export const getAdminDashboardData = async (req, res) => {
   try {
@@ -14,13 +15,21 @@ export const getAdminDashboardData = async (req, res) => {
 
     const ashaWorkers = await user.countDocuments({ role: "Asha worker" });
 
-    const admins = await user.countDocuments({ role: "Admin" });
+    //const admins = await user.countDocuments({ role: "Admin" });
+   const locations = await watersample.distinct("location");
+   const totallocations=locations.length;
+   const hotspots = await watersample.distinct("location",{status:"Unsafe"});
+   const activeHotspots = hotspots.length;
+
 
     // Water sample stats
     const totalSamples = await watersample.countDocuments();
+    const today=new Date();
+    today.setHours(0,0,0,0);
 
-    const unsafeSamples = await watersample.countDocuments({
-      status: "Unsafe"
+    const unsafeSamplestoday = await watersample.countDocuments({
+      status: "Unsafe",
+      createdAt: { $gte: today }
     });
 
     // Latest samples
@@ -36,9 +45,10 @@ export const getAdminDashboardData = async (req, res) => {
         stats: {
           totalUsers,
           ashaWorkers,
-          admins,
+          totallocations,
           totalSamples,
-          unsafeSamples
+          activeHotspots,
+          unsafeSamplestoday
         },
         latestSamples
       }
@@ -53,40 +63,147 @@ export const getAdminDashboardData = async (req, res) => {
 };
 
 
+
+
 export const getPendingAshaWorkers = async (req, res) => {
-    try {
-        // 🛠️ UPDATE: Get filter criteria from query parameters
-        const { stateId, villageId } = req.query;
-        const filter = { user: { status: "PENDING_APPROVAL" }};
+  try {
+    const { state, village } = req.query;
 
-        // 🛠️ UPDATE: Apply filters
-        if (villageId) {
-            filter.village = { id: villageId };
-        } else if (stateId) {
-            filter.user = { 
-                ...filter.user,
-                region: { stateId: stateId }
-            };
-        }
+    // Base filter → only Pending profiles
+    const filter = {
+      status: "Pending"
+    };
 
-        const workers = await prisma.ashaWorker.findMany({
-            where: filter,
-            select: {
-                employeeId: true,
-                contact: true,
-                village: true,
-                qualifications: true,
-                experience: true,
-                user: { select: { id: true, name: true } } // Select user ID
-            }
-        });
-
-        res.status(200).json(workers);
-    } catch (error) {
-        console.error("Error fetching pending Asha Workers:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+    // Apply optional filters
+    if (village) {
+      filter["location.village"] = village;
+    } 
+    else if (state) {
+      filter["location.state"] = state;
     }
+
+    const workers = await Ashaworker.find(filter)
+      .populate("AshaworkerId", "name email role")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      count: workers.length,
+      workers
+    });
+
+  } catch (error) {
+    console.error("Error fetching pending Asha Workers:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    });
+  }
 };
+// GET /api/asha/:id
+
+export const getAshaWorkerById = async (req, res) => {
+  try {
+    const {id}=req.params;
+    const worker = await Ashaworker.findById(id)
+      .populate("AshaworkerId", "name email role");
+
+    if (!worker) {
+      return res.status(404).json({
+        success:false,
+        message:"Asha Worker not found"
+      });
+    }
+
+    return res.status(200).json({
+      success:true,
+      worker
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success:false,
+      message:error.message
+    });
+  }
+};
+export const statusasha = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;   // "Approved" or "Rejected"
+
+    // Validation
+    if (!["Approved", "Rejected"].includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status value"
+      });
+    }
+
+    const ashastatus = await Ashaworker.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    ).populate("AshaworkerId", "name email role");
+
+    if (!ashastatus) {
+      return res.status(404).json({
+        success: false,
+        message: "Asha worker not found"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: `Asha worker ${status} successfully`,
+      worker: ashastatus
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+export const getApproveAshaWorkers = async (req, res) => {
+  try {
+    const { state, village } = req.query;
+
+    // Base filter → only Pending profiles
+    const filter = {
+      status: "Approved"
+    };
+
+    // Apply optional filters
+    if (village) {
+      filter["location.village"] = village;
+    } 
+    else if (state) {
+      filter["location.state"] = state;
+    }
+
+    const workers = await Ashaworker.find(filter)
+      .populate("AshaworkerId", "name email role")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      count: workers.length,
+      workers
+    });
+
+  } catch (error) {
+    console.error("Error fetching pending Asha Workers:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    });
+  }
+};
+
 
 export const getPendingVolunteers = async (req, res) => {
     try {

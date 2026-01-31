@@ -6,7 +6,8 @@ import Register from "./Auth/Register";
 import Login from "./Auth/Login";
 import SetPassword from "./components/admin/pages/setPassword"
 import AdminRoutes from "./components/admin/routes/appRoutes";
-import Healthroutes from "./components/health/routes/appRoutes1"
+import Healthroutes from "./components/health/routes/appRoutes1";
+import AshaRoutes from "./Ashaworker/appRoutes";
 
 const AppRoutes = () => {
   return (
@@ -24,6 +25,7 @@ const AppRoutes = () => {
       {/* Admin Protected Routes */}
       <Route path="/admin/*" element={<AdminRoutes />} />
       <Route path="/health/*" element={<Healthroutes />} />
+       <Route path="/Asha/*" element={<AshaRoutes/>} />
 
       {/* Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />

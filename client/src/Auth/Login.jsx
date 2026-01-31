@@ -24,12 +24,22 @@ const Login = () => {
 
     try {
       const res = await instance.post("/auth/login", form)
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
       if (res.data.success) {
-        const role = res.data.user.role
+        const user = res.data.user;
+        console.log("user",user);
 
-        if (role === "Admin") navigate("/admin/dashboard")
-        else if (role === "AshaWorker") navigate("/asha/dashboard")
+        if (user.role === "Admin") navigate("/admin/dashboard")
+        else if (user.role === "Asha worker"){
+          if(user.hasprofile){
+      navigate("/Asha/ashaworkers")
+      }
+      else{
+        navigate("/Asha/profile")
+      }}
+         
         else navigate("/user/dashboard")
       }
 
