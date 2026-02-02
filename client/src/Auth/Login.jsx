@@ -34,7 +34,7 @@ const Login = () => {
         if (user.role === "Admin") navigate("/admin/dashboard")
         else if (user.role === "Asha worker"){
           if(user.hasprofile){
-      navigate("/Asha/ashaworkers")
+      navigate("/asha/dashboard")
       }
       else{
         navigate("/Asha/profile")

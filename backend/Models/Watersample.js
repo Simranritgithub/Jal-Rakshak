@@ -3,8 +3,17 @@ import mongoose from "mongoose";
 const WaterSampleSchema = new mongoose.Schema({
 
   location: {
-    type: String,
-    required: true
+    State:{
+      type:"String",
+      required:true
+    },
+    district:{
+      type:"String",
+      required:true
+    },
+    village:{
+      type:"String"
+    }
   },
 
   ph: {

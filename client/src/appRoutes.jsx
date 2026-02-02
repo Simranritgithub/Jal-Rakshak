@@ -25,7 +25,7 @@ const AppRoutes = () => {
       {/* Admin Protected Routes */}
       <Route path="/admin/*" element={<AdminRoutes />} />
       <Route path="/health/*" element={<Healthroutes />} />
-       <Route path="/Asha/*" element={<AshaRoutes/>} />
+       <Route path="/asha/*" element={<AshaRoutes/>} />
 
       {/* Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />

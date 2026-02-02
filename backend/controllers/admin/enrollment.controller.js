@@ -4,7 +4,7 @@ import sendEmail from "../../utils/sendEmail.js";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
 import user from "../../Models/User.js";
-import watersample from "../../Models/WaterSample.js";
+import watersample from "../../Models/Watersample.js";
 import Ashaworker from "../../Models/Ashaworker.js";
 
 export const getAdminDashboardData = async (req, res) => {
