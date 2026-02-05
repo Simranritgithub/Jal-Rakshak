@@ -3,6 +3,7 @@ import instance from '../../../utils/axiosInstance';
 import Glasscard from "../../../components/Glasscard";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 
 const AshaWorkerRequests = () => {
 
@@ -124,18 +125,12 @@ const AshaWorkerRequests = () => {
 
 
                       <td className="p-3">
-                        <button
+                        <Button
                         onClick={()=>navigate(`/admin/ashaworkers/${worker._id}`)}
-                          className="
-                            bg-[#26CCC2]
-                            text-white
-                            px-4 py-1
-                            rounded-lg
-                            hover:opacity-90
-                          "
+                          className="flex justify-center w-40 items-center"
                         >
                           View Details
-                        </button>
+                        </Button>
                       </td>
 
                     </tr>

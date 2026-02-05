@@ -15,6 +15,7 @@ import {
 import { Calendar, Download } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Glasscard from "../../Glasscard";
+import Button from "../components/Button";
 
 /* ------------------ MOCK DATA ------------------ */
 
@@ -123,10 +124,10 @@ const HealthContent = () => {
             Today
           </button>
 
-          <button className="bg-[#26CCC2] text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+          <Button className="flex items-center gap-2">
             <Download size={16} />
             Generate Report
-          </button>
+         </Button> 
 
         </div>
       </div>

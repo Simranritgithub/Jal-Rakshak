@@ -9,6 +9,7 @@ import {
 import instance from "../../../utils/axiosInstance";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import Button from "../components/Button";
 
 /* ---------------- NOTIFICATION ---------------- */
 
@@ -181,24 +182,24 @@ const AshaApproval = () => {
 
                   {/* ACTIONS */}
                   <div className="flex flex-col gap-3 items-end">
-                    {worker.status !=="Approved"&&( <button
+                    {worker.status !=="Approved"&&( <Button
                       onClick={() =>
                         handleStatusChange(worker._id, "Approved")
                       }
-                      className="bg-[#26CCC2] text-white px-6 py-2 rounded-lg hover:opacity-90"
+                     
                     >
                       Approve
-                    </button>
+                    </Button>
                    )}
                   { worker.status !=="Rejected"&&(
-                    <button
+                    <Button
                       onClick={() =>
                         handleStatusChange(worker._id, "Rejected")
                       }
                       className="bg-[#FFB76C] text-white px-6 py-2 rounded-lg hover:opacity-90"
                     >
                       Reject
-                    </button>)}
+                    </Button>)}
                   </div>
 
                 </div>

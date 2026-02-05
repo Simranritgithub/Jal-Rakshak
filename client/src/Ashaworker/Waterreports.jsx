@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import instance from "../utils/axiosInstance";
 import Glasscard from "../components/Glasscard";
 import Navbar from "./Navbar";
+import Button from "../components/admin/components/Button";
 
 const Waterreports = () => {
   const [form, setForm] = useState({
@@ -28,6 +29,7 @@ const Waterreports = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("clcik");
 
     try {
       const res = await instance.post("/asha/create/samples", form);
@@ -211,18 +213,12 @@ const Waterreports = () => {
 
             {/* BUTTON */}
             <div className="md:col-span-2 flex justify-end mt-4">
-              <button
+              <Button
                 type="submit"
-                className="
-                  bg-[#26CCC2]
-                  text-white
-                  px-10 py-2
-                  rounded-lg
-                  hover:opacity-90
-                "
+                
               >
                 Submit Report
-              </button>
+              </Button>
             </div>
           </form>
         </Glasscard>

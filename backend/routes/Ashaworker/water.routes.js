@@ -6,5 +6,6 @@ import { allowRoles, verifyToken } from '../../middlewares/auth.middleware.js';
 const router = express.Router();
 
 
-router.post("/create/samples", verifyToken,allowRoles("Asha worker"),createWaterSample);router.post("/my/samples", verifyToken,allowRoles("Asha worker"),getwaterreportsbyid)
+router.post("/create/samples", verifyToken,allowRoles("Asha worker"),createWaterSample);
+router.get("/my/samples", verifyToken,allowRoles("Asha worker"),getwaterreportsbyid)
 export default router;

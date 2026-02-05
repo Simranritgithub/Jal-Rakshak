@@ -67,8 +67,17 @@ const Waterreport = () => {
       const res = await instance.get(url, { params });
 
       if (res.data.success) {
-        setReports(res.data.waterreports);
-      }
+        
+  //  const newReports = [...res.data.waterreports];
+  // const [states]=newReports;
+  // console.log("destructure arary",states)
+  // newReports.splice(1, 1, {
+  //   ...newReports[1],
+  //   location: { ...newReports[1].location,State:"Uttarakhand" }
+  // });
+
+  setReports(res.data.waterreports);
+}
     } catch (err) {
       console.log(err?.response?.data || err.message);
     } finally {

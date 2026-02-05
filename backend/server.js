@@ -41,7 +41,7 @@ app.use(cookieParser());
  app.use("/api/enroll", enrollmentRoutes);
 app.use("/api/auth", authRoutes);
  app.use('/api/water', waterroutes);
- app.use('/api/water', ashawaterroutes);
+ app.use('/api/asha', ashawaterroutes);
 // app.use("/api/hotspot", hotspotroutes);
 // app.use("/api/health", healthroutes);
 // app.use("/api/location", locationroutes);

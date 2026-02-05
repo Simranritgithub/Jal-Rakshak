@@ -1,26 +1,39 @@
 import watersample from "../../Models/Watersample.js";
+import Ashaworker from "../../Models/Ashaworker.js";
 export const getwaterreportsbyid=async(req,res)=>{
   try {
     const {value,type}=req.query;
-    let filter ={};
+    const ashaProfile = await Ashaworker.findOne({
+  AshaworkerId: req.user.id
+});
+
+    let filter ={collectedBy:ashaProfile._id};
     if(value){
       if(type==="State"){
 
-        filter[location.State]=={$regex:value,$options:"i"};
+        filter["location.State"]={$regex:value,$options:"i"};
 
       }
-      if(type==="district"){
+      else if(type==="district"){
 
-        filter[location.district]=={$regex:value,$options:"i"};
-
-      }
-      if(type==="village"){
-
-        filter[location.village]=={$regex:value,$options:"i"};
+        filter["location.district"]={$regex:value,$options:"i"};
 
       }
+     else if(type==="village"){
+
+        filter["location.village"]={$regex:value,$options:"i"};
+
+      }
+      else {
+    // all tab
+    filter.$or = [
+      { "location.State": { $regex: value, $options: "i" } },
+      { "location.district": { $regex: value, $options: "i" } },
+      { "location.village": { $regex: value, $options: "i" } }
+    ];
+  }
     }
-    if(type){
+    if(type && !value){
       if (type === "State") {
     filter["location.State"] = { $ne: "",$exists: true };
   }
@@ -30,16 +43,9 @@ export const getwaterreportsbyid=async(req,res)=>{
   if (type === "village") {
     filter["location.village"] = { $ne: "",  $exists: true };
   }
-   else {
-    // all tab
-    filter.$or = [
-      { "location.State": { $regex: value, $options: "i" } },
-      { "location.district": { $regex: value, $options: "i" } },
-      { "location.village": { $regex: value, $options: "i" } }
-    ];
-  }
+   
     }
-  const waterreports = await watersample.find({collectedBy:req.user.id}).populate({path:"collectedBy",populate:{
+  const waterreports = await watersample.find(filter).populate({path:"collectedBy",select: "AshaworkerId",populate:{
     path:"AshaworkerId",
     select:"name email"
   }})
