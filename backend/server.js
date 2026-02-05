@@ -7,7 +7,9 @@ import cookieParser from "cookie-parser";
 // Import routes
 import authRoutes from "./routes/admin/auth.routes.js";
  import enrollmentRoutes from "./routes/admin/enrollment.routes.js";
- import waterroutes from "./routes/Ashaworker/water.routes.js";
+ import waterroutes from "./routes/admin/water.routes.js";
+ import ashawaterroutes from "./routes/Ashaworker/water.routes.js";
+ 
 // import hotspotroutes from "./routes/Ashaworker/hotspot.routes.js";
 // import healthroutes from "./routes/admin/health.routes.js";
 // import locationroutes from "./routes/admin/managelocation.routes.js";
@@ -38,7 +40,8 @@ app.use(cookieParser());
 // Admin Routes
  app.use("/api/enroll", enrollmentRoutes);
 app.use("/api/auth", authRoutes);
- app.use('/api/asha', waterroutes);
+ app.use('/api/water', waterroutes);
+ app.use('/api/water', ashawaterroutes);
 // app.use("/api/hotspot", hotspotroutes);
 // app.use("/api/health", healthroutes);
 // app.use("/api/location", locationroutes);

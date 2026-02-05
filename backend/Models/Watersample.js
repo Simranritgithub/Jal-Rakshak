@@ -49,7 +49,7 @@ const WaterSampleSchema = new mongoose.Schema({
 
   collectedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: "Ashaworker",
     required: true
   },
 

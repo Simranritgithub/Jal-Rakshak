@@ -71,17 +71,17 @@ const Navbar = () => {
                 : "text-[#2D3436] hover:text-[#26CCC2]"
             }
           >
-            Water Reports
+            CreateWaterReports
           </NavLink>
            <NavLink
-            to="/admin/asharequests"
+            to="/asha/my/water-reports"
             className={({ isActive }) =>
               isActive
                 ? "text-[#26CCC2] font-semibold"
                 : "text-[#2D3436] hover:text-[#26CCC2]"
             }
           >
-            AshaWorkers
+            MyWaterReports
           </NavLink>
 
           <NavLink

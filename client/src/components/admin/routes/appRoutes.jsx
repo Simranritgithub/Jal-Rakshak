@@ -11,6 +11,7 @@ import ManageLocations from "../pages/manageLocations";
 import { LanguageProvider } from "../../../context/languageContext.jsx";
 import AshaApproval from "../pages/ashaApproval.jsx";
 import AshaWorkerRequests from "../pages/Asharequests.jsx";
+import Waterreports from "../pages/Waterreport.jsx";
 const AdminRoutes = () => {
   return (
     <LanguageProvider>
@@ -18,6 +19,7 @@ const AdminRoutes = () => {
       <Routes>
         <Route path="enroll" element={<EnrollDashboard />} />
          <Route path="ashaworkers/:id" element={<AshaApproval />} />
+         <Route path="watersamples" element={<Waterreports/>}/>
          <Route path="asharequests" element={<AshaWorkerRequests />} />
         <Route path="awareness" element={<Awareness />} />
         <Route path="dashboard" element={<Admindashboard />} />

@@ -64,16 +64,6 @@ const Navbar = () => {
           </NavLink>
 
           <NavLink
-            to="/admin/water-reports"
-            className={({ isActive }) =>
-              isActive
-                ? "text-[#26CCC2] font-semibold"
-                : "text-[#2D3436] hover:text-[#26CCC2]"
-            }
-          >
-            Water Reports
-          </NavLink>
-           <NavLink
             to="/admin/asharequests"
             className={({ isActive }) =>
               isActive
@@ -81,7 +71,17 @@ const Navbar = () => {
                 : "text-[#2D3436] hover:text-[#26CCC2]"
             }
           >
-            AshaWorkers
+            AshaRequests
+          </NavLink>
+           <NavLink
+            to="/admin/watersamples"
+            className={({ isActive }) =>
+              isActive
+                ? "text-[#26CCC2] font-semibold"
+                : "text-[#2D3436] hover:text-[#26CCC2]"
+            }
+          >
+            Water Reports
           </NavLink>
 
           <NavLink
