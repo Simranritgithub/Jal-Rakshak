@@ -18,6 +18,7 @@ import authRoutes from "./routes/admin/auth.routes.js";
 // import { translateText } from './controllers/translation.controller.js';
 // import therapistRoutes from "./routes/healthofficial/therapist.routes.js"
 import { connectDB } from "./Config/db.js";
+import { globalErrorHandler } from "./utils/globalerr.js";
 // Load environment variables
 dotenv.config();
 connectDB();
@@ -39,6 +40,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Admin Routes
+
  app.use("/api/enroll", enrollmentRoutes);
 app.use("/api/auth", authRoutes);
  app.use('/api/water', waterroutes);
@@ -53,6 +55,7 @@ app.use("/api/auth", authRoutes);
 // app.use('/api/ai', therapistRoutes);
 
 // Simple health check route
+app.use(globalErrorHandler);
 app.get("/", (req, res) => {
   res.send("Aquasentials API is running...");
 });
