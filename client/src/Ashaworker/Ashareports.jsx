@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "./Navbar";
-import Glasscard from "../components/Glasscard";
+import Navbar from "./Navbar.jsx";
+import Glasscard from "../components/Glasscard.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setSearchTerm,
@@ -25,7 +25,7 @@ const Tabbutton = ({ label, onClick, active }) => {
   );
 };
 
-const MyWaterReport = () => {
+const Ashareports = () => {
   const [activetab, setActivetab] = useState("all");
   const [reports, setReports] = useState([]);
   const dispatch = useDispatch();
@@ -187,4 +187,4 @@ const MyWaterReport = () => {
     </div>
   );
 };
-export default MyWaterReport;
+export default Ashareports;

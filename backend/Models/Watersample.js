@@ -56,7 +56,13 @@ const WaterSampleSchema = new mongoose.Schema({
   isOffline: {
     type: Boolean,
     default: false
-  }
+  },
+  
+alertSent: {
+  type: Boolean,
+  default: false
+}
+
 
 }, { timestamps: true });
 

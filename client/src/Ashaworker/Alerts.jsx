@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import Glasscard from "../../Glasscard";
-import instance from "../../../utils/axiosInstance";
+import Navbar from "./Navbar";
+import Glasscard from "../components/Glasscard";
+import instance from "../utils/axiosInstance";
 
 const Alerts = () => {
   const [alerts, setAlerts] = useState([]);
@@ -12,7 +12,7 @@ const Alerts = () => {
     const fetchAlerts = async () => {
       try {
         setLoading(true);
-        const res = await instance.get("/alerts/getalerts");
+        const res = await instance.get("/asha/alerts");
         if (res.data.success) {
           setAlerts(res.data.alerts);
         }

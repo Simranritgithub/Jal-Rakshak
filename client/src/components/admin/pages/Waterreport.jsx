@@ -43,6 +43,7 @@ const Waterreport = () => {
   const [Reports, setReports] = useState([]);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [alertSentIds, setAlertSentIds] = useState([]);
   const { searchTerm, debouncedSearch} = useSelector(
     (state) => state.search,
   );
@@ -96,8 +97,18 @@ const Waterreport = () => {
 
     return () => clearTimeout(timer);
   }, [searchTerm]);
-  
+  const handleonAlert = async (data) => {
+  try {
+    const res = await instance.post("/alerts/send", data);
 
+    if (res.data.success) {
+      setAlertSentIds(prev => [...prev, data.waterSampleId]);
+      alert("Alert sent successfully");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
   return (
     <div
       className=" min-h-screen
@@ -219,8 +230,34 @@ const Waterreport = () => {
           <p className="mt-4 text-xs text-[#4A8B88]">
             {new Date(report.createdAt).toLocaleDateString()}
           </p>
+          {(report.status === "Unsafe" || report.status === "Warning") && !report.alertSent && (
+  <button
+    className="bg-red-500 text-white px-4 py-2 rounded-xl shadow-2xl mt-2"
+    onClick={() =>
+      handleonAlert({
+        waterSampleId: report._id,
+        message: `Water is ${report.status} at ${
+          [
+            report.location.village,
+            report.location.district,
+            report.location.State
+          ].filter(Boolean).join(", ")
+        }`
+      })
+    }
+  >
+    Send Alert
+  </button>
+)}
 
-        </Glasscard>
+{report.alertSent && (
+  <span className="text-green-600 font-semibold mt-2 inline-block">
+    Alert Sent
+  </span>
+)}
+
+
+      </Glasscard>
       ))}
 
     </div>

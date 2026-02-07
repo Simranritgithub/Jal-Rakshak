@@ -85,7 +85,7 @@ const Navbar = () => {
           </NavLink>
 
           <NavLink
-            to="/admin/alerts"
+            to="/admin/Alerts"
             className={({ isActive }) =>
               isActive
                 ? "text-[#26CCC2] font-semibold"

@@ -9,11 +9,12 @@ import authRoutes from "./routes/admin/auth.routes.js";
  import enrollmentRoutes from "./routes/admin/enrollment.routes.js";
  import waterroutes from "./routes/admin/water.routes.js";
  import ashawaterroutes from "./routes/Ashaworker/water.routes.js";
+ import ashaalerts from "./routes/Ashaworker/alert.routes.js"
  
 // import hotspotroutes from "./routes/Ashaworker/hotspot.routes.js";
 // import healthroutes from "./routes/admin/health.routes.js";
 // import locationroutes from "./routes/admin/managelocation.routes.js";
-// import alertRoutes from "./routes/admin/alert.routes.js";
+ import alertRoutes from "./routes/admin/alert.routes.js";
 // import { translateText } from './controllers/translation.controller.js';
 // import therapistRoutes from "./routes/healthofficial/therapist.routes.js"
 import { connectDB } from "./Config/db.js";
@@ -42,10 +43,11 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
  app.use('/api/water', waterroutes);
  app.use('/api/asha', ashawaterroutes);
+ app.use('/api/asha',ashaalerts);
 // app.use("/api/hotspot", hotspotroutes);
 // app.use("/api/health", healthroutes);
 // app.use("/api/location", locationroutes);
-// app.use('/api/alerts', alertRoutes);
+ app.use('/api/alerts', alertRoutes);
 // app.post('/api/translate', translateText);
 // // health routes 
 // app.use('/api/ai', therapistRoutes);

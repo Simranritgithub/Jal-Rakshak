@@ -1,85 +1,60 @@
-import { PrismaClient } from "@prisma/client";
-import twilio from "twilio";
+import Alert from "../../Models/Alert.js";
+import watersample from "../../Models/Watersample.js";
 
-const prisma = new PrismaClient();
-const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
+export const sendAlert = async (req,res)=>{
+  try{
+    const { waterSampleId, message } = req.body;
 
-export const createAlert = async (req, res) => {
-  try {
-    const { title, message, target, regionId, sentBy } = req.body;
+    const sample = await watersample.findById(waterSampleId);
 
-    // 1️⃣ Save alert to DB
-    const alert = await prisma.alert.create({
-      data: { title, message, target, regionId, sentBy },
-    });
-
-    // 2️⃣ Find recipients
-    const users = target === "ALL"
-      ? await prisma.user.findMany({ where: { regionId } })
-      : await prisma.user.findMany({ where: { regionId, role: target } });
-
-    // 3️⃣ Create notifications for users
-    if (users.length > 0) {
-      const notifications = users.map(u => ({ userId: u.id, alertId: alert.id }));
-      await prisma.userNotification.createMany({
-        data: notifications,
-        skipDuplicates: true,
+    if(!sample){
+      return res.status(404).json({success:false,message:"Sample not found"});
+    }
+    if (sample.alertSent) {
+      return res.status(400).json({
+        success: false,
+        message: "Alert already sent for this sample"
       });
     }
 
-    // 4️⃣ Emit WebSocket event if socket exists
-    if (req.io) req.io.emit("newAlert", { alert });
+    const alert = await Alert.create({
+      message,
+      level: sample.status,
+      location: sample.location,
+      waterSample: waterSampleId
+    });
+     sample.alertSent = true;
+    await sample.save();
+    res.status(201).json({
+      success:true,
+      message:"Alert sent successfully",
+      alert
+    });
 
-    // 5️⃣ Send SMS via Twilio (trial-safe)
-    for (let u of users) {
-      if (!u.phone) {
-        console.log(`❌ User ${u.id} has no phone number`);
-        continue;
-      }
-
-      const formattedPhone = u.phone.startsWith("+") ? u.phone : `+91${u.phone}`;
-      const fromPhone = process.env.TWILIO_PHONE.replace(/\s+/g, "");
-
-      try {
-        const sms = await client.messages.create({
-          body: `ALERT: ${title} - ${message}`,
-          from: fromPhone,
-          to: formattedPhone,
-        });
-        console.log(`✅ SMS sent to ${formattedPhone}: ${sms.sid}`);
-      } catch (err) {
-        console.error(`❌ SMS failed for user ${u.id} (${formattedPhone}): ${err.message}`);
-        // For trial accounts, likely cause: number not verified
-      }
-    }
-
-    res.status(201).json({ message: "Alert created successfully", alert });
-
-  } catch (err) {
-    console.error("Error creating alert:", err);
-    res.status(500).json({ error: "Failed to create alert" });
+  }catch(err){
+    res.status(500).json({success:false,message:err.message});
   }
-};
+}
+
 
 // GET all alerts
 export const getAlerts = async (req, res) => {
   try {
-    const { regionId, userId } = req.query;
 
-    // Fetch alerts optionally filtered by region
-    const alerts = await prisma.alert.findMany({
-      where: regionId ? { regionId } : {},
-      include: {
-        userNotifications: userId
-          ? { where: { userId } } // only notifications for this user
-          : true, // all notifications
-      },
-      orderBy: { createdAt: "desc" }, // latest first
+    const alerts = await Alert.find()
+      .populate("waterSample")   // bring water sample details
+      .sort({ createdAt: -1 });  // latest first
+
+    return res.status(200).json({
+      success: true,
+      alerts
     });
 
-    res.status(200).json({ alerts });
   } catch (err) {
     console.error("Error fetching alerts:", err);
-    res.status(500).json({ error: "Failed to fetch alerts" });
+    return res.status(500).json({
+      success: false,
+      message: err.message
+    });
   }
 };
