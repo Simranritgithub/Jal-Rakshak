@@ -1,7 +1,7 @@
 // Note the .js extension
- import { PrismaClient } from "@prisma/client";
+//  import { PrismaClient } from "@prisma/client";
  import axios from 'axios';
- const prisma = new PrismaClient();
+//  const prisma = new PrismaClient();
 /**
  * Augments the raw ML model prediction with actionable recommendations and potential diseases.
  * @param {object} prediction - The raw prediction object from the ML model.

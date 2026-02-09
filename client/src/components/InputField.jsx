@@ -1,7 +1,7 @@
 const InputField = ({
   label,
   name,
-  type = "text",
+  type ,
   icon,
   value,
   onChange,
@@ -20,7 +20,7 @@ const InputField = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full bg-transparent text-sm text-slate-800 focus:outline-none "
+        className="w-full invalid:border-pink-600 invalid:text-pink-500 bg-transparent text-sm text-slate-800 focus:outline-none "
       />
     </div>
   </div>

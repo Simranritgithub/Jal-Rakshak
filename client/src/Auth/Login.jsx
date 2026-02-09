@@ -94,6 +94,8 @@ const Login = () => {
               <InputField
                 label="Email"
                 name="email"
+                type="email"
+
                 value={form.email}
                 onChange={HandleonChange}
                 icon={<Mail size={18} />}
@@ -103,6 +105,7 @@ const Login = () => {
               <InputField
                 label="Password"
                 name="password"
+                type="password"
                 value={form.password}
                 onChange={HandleonChange}
                 icon={<Lock size={18} />}

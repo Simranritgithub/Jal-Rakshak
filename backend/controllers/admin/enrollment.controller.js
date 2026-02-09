@@ -1,5 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+//import { PrismaClient } from "@prisma/client";
+
 import sendEmail from "../../utils/sendEmail.js";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
