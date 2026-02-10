@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import instance from "../../../utils/axiosInstance";
 import {
   BarChart,
   Bar,
@@ -79,9 +79,7 @@ const HealthContent = () => {
 
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:5001/api/enroll/dashboard"
-        );
+        const res = await instance.get("/enroll/dashboard");
         setDashboardData(res.data.data);
       } catch (err) {
         console.error(err);
