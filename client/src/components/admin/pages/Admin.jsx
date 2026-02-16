@@ -74,20 +74,29 @@ const HealthContent = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("user"));
-    if (stored) setUser(stored);
-
-    const fetchData = async () => {
-      try {
-        const res = await instance.get("/enroll/dashboard");
-        setDashboardData(res.data.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
+    
+        const fetchUserData = async () => {
+          try {
+            console.log("api",import.meta.env.VITE_API_URL);
+          const userres = await instance.get("/auth/me");
+          setUser(userres.data.user);
+          console.log("User Data:", userres.data.user);
+           const res = await instance.get("/enroll/dashboard");
+           setDashboardData(res.data.data);
+            console.log("Dashboard Data:", res.data.data);
+        }
+    
+    
+    catch (err) {
+        console.error("Error fetching user data:", err);
+    }finally {
         setLoading(false);
       }
     };
-    fetchData();
+    
+    fetchUserData();
+    
+    
   }, []);
 
   if (loading) return <p className="text-white">Loading...</p>;

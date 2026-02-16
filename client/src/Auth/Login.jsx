@@ -24,8 +24,8 @@ const Login = () => {
 
     try {
       const res = await instance.post("/auth/login", form)
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      //  localStorage.setItem("token", res.data.token);
+      // localStorage.setItem("user", JSON.stringify(res.data.user));
 
       if (res.data.success) {
         const user = res.data.user;

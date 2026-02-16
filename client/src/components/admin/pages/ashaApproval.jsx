@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { act, useEffect, useState } from "react";
 import {
   FaTasks,
   FaUserCircle,
@@ -72,6 +72,7 @@ const AshaApproval = () => {
   }, [id]);
 
   const handleStatusChange = async (employeeId, status) => {
+    console.log("Updating status for using event delegation:");
     try {
       const res = await instance.patch(
         `/enroll/status/${employeeId}`,
@@ -181,11 +182,20 @@ const AshaApproval = () => {
                   </div>
 
                   {/* ACTIONS */}
-                  <div className="flex flex-col gap-3 items-end">
+                  <div className="flex flex-col gap-3 items-end" onClick={(e) => {
+    const target = e.target;
+    const btn = target.closest("button");
+    if (!btn) return;
+    const id=btn.getAttribute("data-id");
+    const action=btn.getAttribute("data-action");
+    if(action==="approve")
+      {handleStatusChange(id, "Approved");}
+    else if(action==="reject"){handleStatusChange(id, "Rejected");}
+  }}>
                     {worker.status !=="Approved"&&( <Button
-                      onClick={() =>
-                        handleStatusChange(worker._id, "Approved")
-                      }
+                      className="bg-[#26CCC2] text-white px-6 py-2 rounded-lg hover:opacity-90"
+                      data-id={worker._id}
+                      data-action="approve"
                      
                     >
                       Approve
@@ -193,10 +203,9 @@ const AshaApproval = () => {
                    )}
                   { worker.status !=="Rejected"&&(
                     <Button
-                      onClick={() =>
-                        handleStatusChange(worker._id, "Rejected")
-                      }
                       className="bg-[#FFB76C] text-white px-6 py-2 rounded-lg hover:opacity-90"
+                      data-id={worker._id}
+                      data-action="reject"
                     >
                       Reject
                     </Button>)}

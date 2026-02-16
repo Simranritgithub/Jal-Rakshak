@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Bell, UserCircle, Droplets } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
+import instance from "../../../utils/axiosInstance";
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
+    const fetchUserData = async () => {
+      try {
+        const userres = await instance.get("/auth/me");
+        setUser(userres.data.user);
+        console.log("User Data:", userres.data.user?.name);
+      } catch (err) {
+        console.error("Error fetching user data:", err);
+      }
+  }
+  fetchUserData();
   }, []);
 
   const handleLogout = () => {

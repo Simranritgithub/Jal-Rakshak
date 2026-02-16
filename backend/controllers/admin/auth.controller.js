@@ -83,29 +83,56 @@ export const login = async (req, res) => {
 
     // 🔹 Generate token
     const token = jwt.sign(
-      { id: existingUser._id, role: existingUser.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+  { id: existingUser._id, role: existingUser.role },
+  process.env.JWT_SECRET,
+  { expiresIn: "1d" }
+);
 
-    return res.status(200).json({
-      success: true,
-      message: "Login successful",
-      token,
-      user: {
-        id: existingUser._id,
-        name: existingUser.name,
-        email: existingUser.email,
-        role: existingUser.role,
-        hasprofile
-      }
-      
-    });
+// ✅ COOKIE SET HERE
+res.cookie("accessToken", token, {
+  httpOnly: true,        // ❌ JS access nahi
+  secure: process.env.NODE_ENV === "production", // HTTPS in prod
+  sameSite: "strict",    // CSRF protection
+  maxAge: 24 * 60 * 60 * 1000 // 1 day
+});
 
-  } catch (error) {
+return res.status(200).json({
+  success: true,
+  message: "Login successful",
+  user: {
+    id: existingUser._id,
+    name: existingUser.name,
+    email: existingUser.email,
+    role: existingUser.role,
+    hasprofile
+  }
+});
+  }
+catch (error) {
     return res.status(500).json({
       success: false,
       message: error.message
     });
   }
 };
+export const authme=async(req,res)=>{
+  try {
+    const userId=req.userId;
+    const userData=await user.findById(userId).populate("name email role");
+    if(!userData){
+      return res.status(404).json({
+        success:false,
+        message:"User not found"
+      })
+    }
+    return res.status(200).json({
+      success:true,
+      user:userData
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success:false,
+      message:error.message
+    })
+  }
+}
