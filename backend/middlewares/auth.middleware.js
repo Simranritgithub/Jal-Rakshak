@@ -36,7 +36,7 @@ export const verifyToken = (req, res, next) => {
     req.userId = decoded.id; // Attach user ID to request for easy access
     next();
   } catch (err) {
-    console.error("❌ JWT Verification Error:", err.message);
+    console.error(" JWT Verification Error:", err.message);
     return res.status(403).json({ message: "Forbidden: Invalid or expired token" });
   }
 };

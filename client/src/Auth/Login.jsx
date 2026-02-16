@@ -92,6 +92,7 @@ const Login = () => {
             >
 
               <InputField
+                
                 label="Email"
                 name="email"
                 type="email"
@@ -101,6 +102,8 @@ const Login = () => {
                 icon={<Mail size={18} />}
                 placeholder="Enter your email"
               />
+              {/* <p className='invisible peer-invalid:visible text-red-500 font-semibold'>Please provide vaild email</p> */}
+
 
               <InputField
                 label="Password"
